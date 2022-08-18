@@ -32,13 +32,13 @@ namespace MineManagementApi.Controllers
                 return Problem(ex.Message, ex.Source);
             }
         }
-
-        [HttpGet("{id?}")]
-        public async Task<IActionResult> List([FromRoute] string? id)
+        
+        [HttpGet("{vId?}")]
+        public async Task<IActionResult> List([FromRoute] string? vid)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrWhiteSpace(vid))
                 return Ok(await db.Locations.ToListAsync());
-            return Ok(db.Locations.Where(e => e.VehicleID == id));
+            return Ok(db.Locations.Where(e => e.VehicleID.Equals(vid)));
 
         }
     }
