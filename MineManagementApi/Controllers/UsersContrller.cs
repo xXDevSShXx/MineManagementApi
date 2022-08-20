@@ -9,20 +9,20 @@ namespace MineManagementApi.Controllers
     [ApiController]
     public class UsersContrller : ControllerBase
     {
-        MineManagementApiDbContext _db;
+        MineManagementApiDbContext db;
 
-        public UsersContrller(MineManagementApiDbContext db)
+        public UsersContrller(MineManagementApiDbContext dbContext)
         {
-            _db = db;
+            db = dbContext;
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(int personalId)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(e => e.PersonalID.Equals(personalId));
+            var user = await db.Users.FirstOrDefaultAsync(e => e.PersonalID.Equals(personalId));
             if (user == null)
             {
-                return BadRequest("Requested Entity Was Not Found");
+                return BadRequest("User Not Found");
             }
             return Ok(user);
         }
