@@ -24,7 +24,7 @@ namespace MineManagementApi.Controllers
                     return BadRequest("User Not Found");
                 var entity = Location.Create(vm, DateTime.Now);
                 await db.Locations.AddAsync(entity);
-
+                await db.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception ex)
@@ -32,14 +32,11 @@ namespace MineManagementApi.Controllers
                 return Problem(ex.Message, ex.Source);
             }
         }
-        
-        [HttpGet("{vId?}")]
-        public async Task<IActionResult> List([FromRoute] string? vid)
-        {
-            if (string.IsNullOrWhiteSpace(vid))
-                return Ok(await db.Locations.ToListAsync());
-            return Ok(db.Locations.Where(e => e.VehicleID.Equals(vid)));
 
+        [HttpGet()]
+        public async Task<IActionResult> List()
+        {
+            return Ok(await db.Locations.ToListAsync());
         }
     }
 }
